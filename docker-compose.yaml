@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  app:
+    build: ./App
+    environment:
+      - NODE_ENV=development
+    #continer_name: inked_c
+    ports:
+      - '8081:8081'
+
+    volumes:
+      - ./App:/app
+      - ./app/node_modules
+    stdin_open: true
+    tty: true
+
