@@ -36,3 +36,6 @@ App/.env*.local
 
 # typescript
 App/*.tsbuildinfo
+
+#Server
+Server/Config/
