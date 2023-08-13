@@ -1,32 +1,53 @@
+import { JwtPayload } from 'jsonwebtoken';
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
 
 const router = Router();
 const prisma = new PrismaClient();
 
+const JWT_SECRET = "LMAO TOP LEVEL ENCRYPTION";
+
 //Create Entry
 router.post('/', async (req, res) => {
-    const { content, image, userId } = req.body;
+    const { content, image } = req.body;
+
+    //@ts-ignore
+    const user = req.user;
 
     try {
         const result = await prisma.entry.create({
             data: {
                 content,
                 image,
-                userId
+                userId: user.id
+            },
+            include: {
+                user: true
             }
         });
 
         res.json(result);
     } catch (e) {
-        res.status(400).json({ error: "Username and Email should be unique" });
+        res.status(400).json({ error: "Error" });
     }
 
 });
 
 //List Entries
 router.get('/', async (req, res) => {
-    const allEntries = await prisma.entry.findMany()
+    const allEntries = await prisma.entry.findMany({
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    username: true,
+                    image: true
+                }
+            }
+        }
+    })
 
     res.json(allEntries);
 });
@@ -39,6 +60,9 @@ router.get('/:id', async (req, res) => {
         where: {
             id: Number(id),
         },
+        include: {
+            user: true
+        }
     });
 
     if (!entry) {

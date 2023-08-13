@@ -11,27 +11,50 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  email String @unique
+
   name     String?
-  username String   @unique
-  image String?
-  bio String?
+  username String? @unique
+  image    String?
+  bio      String?
 
   entries Entry[]
+  tokens  Token[]
 }
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type       String
+  emailToken String? @unique
+
+  valid      Boolean  @default(true)
+  expiration DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+//enum TokenType {
+//  EMAIL
+//  API
+//}
 
 model Entry {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt 
+  updatedAt DateTime @updatedAt
 
-  content  String
-  image String?
+  content String
+  image   String?
 
   impression Int @default(0)
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
 }

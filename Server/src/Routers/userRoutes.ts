@@ -40,6 +40,9 @@ router.get('/:id', async (req, res) => {
         where: {
             id: Number(id),
         },
+        include: {
+            entries: true
+        }
     });
 
     res.json(user);
