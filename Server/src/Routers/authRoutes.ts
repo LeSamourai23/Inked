@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 const EMAIL_TOKEN_EXPIRATION = 1 * 60 * 60 * 1000;
 const AUTH_TOKEN_EXPIRATION = 24 * 60 * 60 * 1000;
-const JWT_SECRET = "LMAO TOP LEVEL ENCRYPTION";
+const JWT_SECRET = process.env.JWT_SECRET || "LMAO TOP LEVEL ENCRYPTION";
 
 //Generate a random token for the email token
 function generateEmailToken() {
