@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import { sendEmail } from '../Services/emailService'
+import { send } from 'process';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -100,6 +102,8 @@ router.post('/authenticate', async (req, res) => {
 
     //Generate the JWT Token
     const authToken = generateAuthToken(apiToken.id);
+
+    await sendEmail(email, emailToken);
 
     res.status(200).json({ message: `${authToken}` });
 });

@@ -1,12 +1,8 @@
-import { JwtPayload } from 'jsonwebtoken';
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
 
 const router = Router();
 const prisma = new PrismaClient();
-
-const JWT_SECRET = "LMAO TOP LEVEL ENCRYPTION";
 
 //Create Entry
 router.post('/', async (req, res) => {
